@@ -55,14 +55,35 @@ public class RunKernel {
   @SuppressWarnings("deprecation")
   public static void main(String[] args)
       throws Exception {
+	/*
+	 * --设置安全管理器  
+	 */
     System.setSecurityManager(new SecurityManager());
+    /*
+     * --异常处理
+     */
     Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionLogger(false));
+    /*
+     * -这样就把第一个参数设置成为系统的全局变量！
+     * -可以在项目的任何一个地方 通过System.getProperty("变量");来获得，
+     * -第二参数是它的值
+     */
     System.setProperty(org.opentcs.util.configuration.Configuration.PROPKEY_IMPL_CLASS,
                        org.opentcs.util.configuration.XMLConfiguration.class.getName());
 
+    /*
+     * --读取一些配置文件位置
+     */
     Environment.logSystemInfo();
 
+    /*
+     * -输出一些LOG信息
+     */
     LOG.debug("Setting up openTCS kernel {}...", Environment.getBaselineVersion());
+    
+    /*
+     * -Guice开始代码
+     */
     Injector injector = Guice.createInjector(customConfigurationModule());
     injector.getInstance(KernelStarter.class).startKernel();
   }
