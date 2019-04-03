@@ -34,7 +34,7 @@ public abstract class ConfigurableInjectionModule
 
   /**
    * Sets the configuration binding provider.
-   *
+   * --设置 配置绑定提供程序
    * @param configBindingProvider The new configuration binding provider.
    */
   public void setConfigBindingProvider(

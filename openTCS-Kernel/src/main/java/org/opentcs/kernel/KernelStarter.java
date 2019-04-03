@@ -70,7 +70,7 @@ public class KernelStarter {
     for (KernelExtension extension : extensions) {
       kernel.addKernelExtension(extension);
     }
-
+    LOG.info("start initialize~~~~");
     // Start local kernel.
     kernel.initialize();
     LOG.debug("Kernel initialized.");

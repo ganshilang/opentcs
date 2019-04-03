@@ -84,7 +84,9 @@ public class RunKernel {
     /*
      * -Guice¿ªÊ¼´úÂë
      */
+    LOG.info("start injector~~~~~");
     Injector injector = Guice.createInjector(customConfigurationModule());
+    LOG.info("end injector~~~~~ ready to startKernel");
     injector.getInstance(KernelStarter.class).startKernel();
   }
 
@@ -103,6 +105,7 @@ public class RunKernel {
                         new DefaultRecoveryEvaluatorModule());
 
     ConfigurationBindingProvider bindingProvider = configurationBindingProvider();
+    
     for (KernelInjectionModule defaultModule : defaultModules) {
       defaultModule.setConfigBindingProvider(bindingProvider);
     }
@@ -129,6 +132,9 @@ public class RunKernel {
 
   private static ConfigurationBindingProvider configurationBindingProvider() {
     return new Cfg4jConfigurationBindingProvider(
+		/*
+		 * -Path.get
+		 */
         Paths.get(System.getProperty("opentcs.base", "."),
                   "config",
                   "opentcs-kernel-defaults-baseline.properties")

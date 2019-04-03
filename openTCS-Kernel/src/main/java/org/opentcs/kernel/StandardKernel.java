@@ -160,6 +160,7 @@ final class StandardKernel
 
     initialized = true;
     LOG.debug("Starting kernel thread");
+    LOG.info("Starting kernel thread~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     Thread kernelThread = new Thread(this, "kernelThread");
     kernelThread.start();
   }
