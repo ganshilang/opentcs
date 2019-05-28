@@ -71,7 +71,7 @@ public class KernelStarter {
       kernel.addKernelExtension(extension);
     }
     LOG.info("start initialize~~~~");
-    // Start local kernel.
+    // --初始化本地内核
     kernel.initialize();
     LOG.debug("Kernel initialized.");
 

@@ -9,6 +9,8 @@ package org.opentcs.virtualvehicle;
 
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import org.opentcs.customizations.kernel.KernelInjectionModule;
+import org.opentcs.testvehicle.TextAdapterComponentsFactory;
+import org.opentcs.testvehicle.TextCommunicationAdapterFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +42,10 @@ public class LoopbackCommAdapterModule
         .toInstance(configuration);
 
     install(new FactoryModuleBuilder().build(LoopbackAdapterComponentsFactory.class));
+    
+    /*-添加自己的驱动-*/
+    install(new FactoryModuleBuilder().build(TextAdapterComponentsFactory.class));
+    vehicleCommAdaptersBinder().addBinding().to(TextCommunicationAdapterFactory.class);
     
     // tag::documentation_createCommAdapterModule[]
     vehicleCommAdaptersBinder().addBinding().to(LoopbackCommunicationAdapterFactory.class);
