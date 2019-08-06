@@ -32,6 +32,7 @@ public class KernelStarter {
   private static final Logger LOG = LoggerFactory.getLogger(KernelStarter.class);
   /**
    * The kernel we're working with.
+   * -我们要使用的内核
    */
   private final LocalKernel kernel;
   /**
@@ -67,6 +68,7 @@ public class KernelStarter {
   public void startKernel()
       throws IOException {
     // Register kernel extensions.
+	//-初始化内核拓展
     for (KernelExtension extension : extensions) {
       kernel.addKernelExtension(extension);
     }

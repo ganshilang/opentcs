@@ -28,6 +28,7 @@ public interface Lifecycle {
 
   /**
    * Terminates the instance and frees resources.
+   * -½áÊø
    */
   void terminate();
 }

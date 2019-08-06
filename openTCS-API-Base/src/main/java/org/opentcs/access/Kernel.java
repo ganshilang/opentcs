@@ -159,8 +159,10 @@ public interface Kernel
 
   /**
    * Sets the current state of the kernel.
+   * -设置当前内核的状态
    * <p>
    * Note: This method should only be used internally by the Kernel application.
+   * -该方法仅仅提供给内核使用
    * </p>
    *
    * @param newState The state the kernel is to be set to.

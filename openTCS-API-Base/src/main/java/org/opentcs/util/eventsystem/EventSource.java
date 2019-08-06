@@ -11,7 +11,9 @@ import org.opentcs.util.annotations.ScheduledApiChange;
 
 /**
  * This interface declares methods for registering and unregistering event
+ * -这个接口声明了注销和注册事件的方法
  * listeners with a source of events.
+ * -具有事件源的监听功能
  *
  * @author Stefan Walter (Fraunhofer IML)
  * @param <E> The actual event implementation.

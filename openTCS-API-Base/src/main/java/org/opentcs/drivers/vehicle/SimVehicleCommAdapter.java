@@ -13,6 +13,7 @@ import org.opentcs.util.annotations.ScheduledApiChange;
 /**
  * This interface declares methods that a vehicle driver intended for simulation
  * must implement.
+ * -该接口模拟车辆必须实现的接口
  *
  * @author Stefan Walter (Fraunhofer IML)
  */

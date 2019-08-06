@@ -32,10 +32,12 @@ public class VehicleProcessModel {
 
   /**
    * The maximum number of notifications we want to keep.
+   * -最大缓存的最大通知数
    */
   private static final int MAX_NOTIFICATION_COUNT = 100;
   /**
    * A copy of the kernel's Vehicle instance.
+   * -内核实例副本
    */
   private final Vehicle vehicle;
   /**
@@ -44,22 +46,27 @@ public class VehicleProcessModel {
   private final TCSObjectReference<Vehicle> vehicleReference;
   /**
    * Used for implementing property change events.
+   * -用于属性更改事件
    */
   private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
   /**
    * Whether the comm adapter is currently enabled.
+   * -通信配置器开关状态量
    */
   private boolean commAdapterEnabled;
   /**
    * Whether the comm adapter is currently connected to the vehicle.
+   * -通信配置器连接到小车的状态量
    */
   private boolean commAdapterConnected;
   /**
    * The name of the vehicle's current position.
+   * -小车当前位置名称
    */
   private String vehiclePosition;
   /**
    * User notifications published by the comm adapter.
+   * -
    */
   private final Queue<UserNotification> notifications = new LinkedList<>();
 
@@ -83,7 +90,7 @@ public class VehicleProcessModel {
 
   /**
    * Creates a new instance.
-   *
+   *-创建一个实例
    * @param attachedVehicle The vehicle attached to the new instance.
    */
   public VehicleProcessModel(@Nonnull Vehicle attachedVehicle) {

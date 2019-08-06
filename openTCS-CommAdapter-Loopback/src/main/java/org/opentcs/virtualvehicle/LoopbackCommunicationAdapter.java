@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 /**
  * A {@link VehicleCommAdapter} that does not really communicate with a physical vehicle but roughly
  * simulates one.
+ * -这个模块是模拟一个通信模块
  *
  * @author Stefan Walter (Fraunhofer IML)
  */
@@ -50,14 +51,17 @@ public class LoopbackCommunicationAdapter
   public static final String LHD_NAME = "default";
   /**
    * This class's Logger.
+   * -定义这个类的logger
    */
   private static final Logger LOG = LoggerFactory.getLogger(LoopbackCommunicationAdapter.class);
   /**
    * The time by which to advance the velocity controller per step (in ms).
+   * -每步推进的周期时间
    */
   private static final int ADVANCE_TIME = 100;
   /**
    * This instance's configuration.
+   * -这个实例的初始化
    */
   private final VirtualVehicleConfiguration configuration;
   /**
@@ -66,14 +70,17 @@ public class LoopbackCommunicationAdapter
   private final LoopbackAdapterComponentsFactory componentsFactory;
   /**
    * The kernel's executor.
+   * -内核执行者
    */
   private final ExecutorService kernelExecutor;
   /**
    * The task simulating the virtual vehicle's behaviour.
+   * -模拟虚拟车辆行为的任务。
    */
   private CyclicTask vehicleSimulationTask;
   /**
    * The boolean flag to check if execution of the next command is allowed.
+   * -检查是否可以执行下一个命令的布尔量
    */
   private boolean singleStepExecutionAllowed;
   /**
@@ -87,6 +94,7 @@ public class LoopbackCommunicationAdapter
 
   /**
    * Creates a new instance.
+   * -创建一个实例
    *
    * @param componentsFactory The factory providing additional components for this adapter.
    * @param configuration This class's configuration.
@@ -145,16 +153,26 @@ public class LoopbackCommunicationAdapter
   }
 
   @Override
+  /*
+   * (non-Javadoc)
+   * @see org.opentcs.drivers.vehicle.BasicVehicleCommAdapter#enable()
+   * -启动适配器
+   */
+  
   public synchronized void enable() {
     if (isEnabled()) {
       return;
     }
     getProcessModel().getVelocityController().addVelocityListener(getProcessModel());
-    // Create task for vehicle simulation.
+    /*
+     *  Create task for vehicle simulation.
+     *  -创建一个模拟任务，每个车一个线程
+     */
+    
     vehicleSimulationTask = new VehicleSimulationTask();
     Thread simThread = new Thread(vehicleSimulationTask, getName() + "-simulationTask");
     simThread.start();
-    super.enable();
+    super.enable();//调用父类的方法（最近的父类）
   }
 
   @Override
@@ -278,21 +296,31 @@ public class LoopbackCommunicationAdapter
     @Override
     protected void runActualTask() {
       final MovementCommand curCommand;
+      /*
+       * -线程同步锁
+       */
       synchronized (LoopbackCommunicationAdapter.this) {
         curCommand = getSentQueue().peek();
       }
       simAdvanceTime = (int) (ADVANCE_TIME * configuration.simulationTimeFactor());
+      //如果没有命令
       if (curCommand == null) {
         Uninterruptibles.sleepUninterruptibly(ADVANCE_TIME, TimeUnit.MILLISECONDS);
         getProcessModel().getVelocityController().advanceTime(simAdvanceTime);
       }
       else {
         // If we were told to move somewhere, simulate the journey.
+    	// 如果我们被告知到达某一个地方，那么我们就开始模拟执行
         LOG.debug("Processing MovementCommand...");
         final Step curStep = curCommand.getStep();
+        LOG.info(vehicle.getName() + curStep.toString());
+        LOG.info(Integer.toString(curStep.getRouteIndex()));
+        LOG.info(curCommand.getStep().getPath().getProperty("KY"));//读取KY性质参数
         // Simulate the movement.
+        //模拟移动
         simulateMovement(curStep);
         // Simulate processing of an operation.
+        //模拟执行操作过程
         if (!curCommand.isWithoutOperation()) {
           simulateOperation(curCommand.getOperation());
         }
@@ -300,10 +328,12 @@ public class LoopbackCommunicationAdapter
         if (!isTerminated()) {
           // Set the vehicle's state back to IDLE, but only if there aren't 
           // any more movements to be processed.
+          // 任务执行完成，将小车设置为空闲状态
           if (getSentQueue().size() <= 1 && getCommandQueue().isEmpty()) {
             getProcessModel().setVehicleState(Vehicle.State.IDLE);
           }
           // Update GUI.
+          // 更新UI界面
           synchronized (LoopbackCommunicationAdapter.this) {
             MovementCommand sentCmd = getSentQueue().poll();
             // If the command queue was cleared in the meantime, the kernel
@@ -313,6 +343,7 @@ public class LoopbackCommunicationAdapter
             // and we shouldn't report anything back.
             if (sentCmd != null && sentCmd.equals(curCommand)) {
               // Let the vehicle manager know we've finished this command.
+              // 让车辆知道我们已经完成这个命令
               getProcessModel().commandExecuted(curCommand);
               LoopbackCommunicationAdapter.this.notify();
             }

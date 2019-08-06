@@ -105,14 +105,17 @@ final class StandardKernel
   private final EventBus eventBus;
   /**
    * Our executor.
+   * -我们的执行者
    */
   private final ScheduledExecutorService kernelExecutor;
   /**
    * This kernel's order receivers.
+   * -内核订单接收者
    */
   private final Set<KernelExtension> kernelExtensions = new HashSet<>();
   /**
    * Functions as a barrier for the kernel's {@link #run() run()} method.
+   * -信号量 ，0表示没有同时运行的线程
    */
   private final Semaphore terminationSemaphore = new Semaphore(0);
   /**
@@ -150,12 +153,15 @@ final class StandardKernel
       return;
     }
     // First of all, start all kernel extensions that are already registered.
+    //-首先，启动已经注册的所有内核扩展
     for (KernelExtension extension : kernelExtensions) {
       LOG.debug("Initializing extension: {}", extension.getClass().getName());
+      LOG.info("Initializing extension: {}", extension.getClass().getName());
       extension.initialize();
     }
 
     // Initial state is modelling.
+    // 初始化模式
     setState(State.MODELLING);
 
     initialized = true;
@@ -177,7 +183,14 @@ final class StandardKernel
     }
     // Note that the actual shutdown of extensions should happen when the kernel
     // thread (see run()) finishes, not here.
+    /*
+     * -请注意，扩展的实际关闭应在内核//线程（请参阅run()）完成时发生，而不是此处
+     */
     // Set the terminated flag and wake up this kernel's thread for termination.
+    /*
+     * -设置终止标志并唤醒此内核的线程以终止。内核创建了一个新的线程等待terminationSemaphore信号量
+     * -释放
+     */
     initialized = false;
     terminationSemaphore.release();
   }
@@ -185,6 +198,7 @@ final class StandardKernel
   @Override
   public void run() {
     // Wait until terminated.
+	//-一直等到终止进程
     terminationSemaphore.acquireUninterruptibly();
     LOG.info("Terminating...");
     // Sleep a bit so clients have some time to receive an event for the
@@ -248,6 +262,10 @@ final class StandardKernel
   }
 
   @Override
+  /*
+   * (non-Javadoc)
+   * @see org.opentcs.access.Kernel#setState(org.opentcs.access.Kernel.State)
+   */
   public void setState(State newState)
       throws IllegalArgumentException {
     Objects.requireNonNull(newState, "newState is null");

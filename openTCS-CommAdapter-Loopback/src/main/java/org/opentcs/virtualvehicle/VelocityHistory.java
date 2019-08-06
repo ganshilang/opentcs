@@ -24,6 +24,7 @@ public class VelocityHistory {
   private static final Logger LOG = LoggerFactory.getLogger(VelocityHistory.class);
   /**
    * The actual ring buffer, containing the velocity values.
+   * -实际环形缓冲器，包含速度值
    */
   private final int[] velocities;
   /**

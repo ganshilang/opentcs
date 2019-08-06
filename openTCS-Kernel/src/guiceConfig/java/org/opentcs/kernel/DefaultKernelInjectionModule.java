@@ -62,6 +62,8 @@ import org.opentcs.util.event.EventBus;
 import org.opentcs.util.event.EventHandler;
 import org.opentcs.util.event.SimpleEventBus;
 import org.opentcs.util.logging.UncaughtExceptionLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A Guice module for the openTCS kernel application.
@@ -71,27 +73,33 @@ import org.opentcs.util.logging.UncaughtExceptionLogger;
 public class DefaultKernelInjectionModule
     extends KernelInjectionModule {
 
+  private static final Logger LOG = LoggerFactory.getLogger(DefaultKernelInjectionModule.class);
+	
   @Override
   protected void configure() {
-    configureEventHub();
+    LOG.info("begin to binding~~~~~~~");
+	configureEventHub();
     configureKernelExecutor();
 
     // Ensure that the application's home directory can be used everywhere.
+    // -确保应用程序的主目录可以在任何地方使用
     File applicationHome = new File(System.getProperty("opentcs.home", "."));
     bind(File.class)
         .annotatedWith(ApplicationHome.class)
         .toInstance(applicationHome);
 
     // A single global synchronization object for the kernel.
+    // -内核的单个全局同步对象
     bind(Object.class)
         .annotatedWith(GlobalKernelSync.class)
         .to(Object.class)
         .in(Singleton.class);
-
+    
     // The kernel's data pool structures.
+    // -内核的数据池结构。
     bind(TCSObjectPool.class).in(Singleton.class);
     bind(Model.class).in(Singleton.class);
-    bind(TransportOrderPool.class).in(Singleton.class);
+    bind(TransportOrderPool.class).in(Singleton.class);//in(Singleton.class)只能实例一次
     bind(NotificationBuffer.class).in(Singleton.class);
 
     configurePersistence();
@@ -117,6 +125,7 @@ public class DefaultKernelInjectionModule
     configureKernelServicesDependencies();
 
     // Ensure all of these binders are initialized.
+    // -确保所有这些绑定都已初始化
     extensionsBinderAllModes();
     extensionsBinderModelling();
     extensionsBinderOperating();

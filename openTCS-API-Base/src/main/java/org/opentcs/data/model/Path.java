@@ -129,6 +129,10 @@ public class Path
   }
 
   @Override
+  /*
+   * (non-Javadoc)
+   * @see org.opentcs.data.TCSObject#withProperty(java.lang.String, java.lang.String)
+   */
   public Path withProperty(String key, String value) {
     return new Path(getIdWithoutDeprecationWarning(),
                     getName(),
@@ -297,7 +301,7 @@ public class Path
 
   /**
    * Return the maximum allowed forward velocity (in mm/s) for this path.
-   *
+   *-返回路径最大速度
    * @return The maximum allowed forward velocity (in mm/s). A value of 0 means
    * forward movement is not allowed on this path.
    */
@@ -307,7 +311,7 @@ public class Path
 
   /**
    * Set the maximum allowed forward velocity (in mm/s).
-   *
+   *-设置最大速度
    * @param newVelocity The new maximum allowed velocity for this path
    * (in mm/s). May not be a negative value.
    * @throws IllegalArgumentException If <code>newVelocity</code> is negative.

@@ -112,26 +112,32 @@ public class Route
 
     /**
      * The path to travel.
+     * -当前行驶的路径
      */
     private final Path path;
     /**
      * The point that the vehicle is starting from.
+     * -上一个点
      */
     private final Point sourcePoint;
     /**
      * The point that is reached by travelling the path.
+     * -当前路径的目标点
      */
     private final Point destinationPoint;
     /**
      * The direction into which the vehicle is supposed to travel.
+     * -车辆形式状态（前进/后退）
      */
     private final Vehicle.Orientation vehicleOrientation;
     /**
      * This step's index in the vehicle's route.
+     * -该段路径在路径规划中的序号
      */
     private final int routeIndex;
     /**
      * Whether execution of this step is allowed.
+     * -当前步骤是否允许执行
      */
     private final boolean executionAllowed;
 

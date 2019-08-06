@@ -62,7 +62,7 @@ public abstract class CyclicTask
 
   /**
    * Indicates whether this task has been terminated.
-   *
+   * -表示该任务是否结束
    * @return <code>true</code> if, and only if, this task's
    * <em>terminated</em> flag has been set.
    */

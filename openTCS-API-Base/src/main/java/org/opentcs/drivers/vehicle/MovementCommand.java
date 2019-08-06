@@ -26,49 +26,61 @@ public class MovementCommand {
 
   /**
    * A constant indicating there is no operation to be executed after moving.
+   * -表示移动后不执行操作的常量
    */
   public static final String NO_OPERATION = DriveOrder.Destination.OP_NOP;
   /**
    * A constant indicating the vehicle should basically just move to a point
+   * -指示小车基本上应该运动到某一个点（地标点）的常量，
    * without a location associated to it.
+   * -而没有与之相关联的位置（工位）。
    */
   public static final String MOVE_OPERATION = DriveOrder.Destination.OP_MOVE;
   /**
    * A constant for parking the vehicle. (Again, basically doing nothing at the
    * destination.)
+   * -停车常量，基本上在此不会执行任何操作
    */
   public static final String PARK_OPERATION = DriveOrder.Destination.OP_PARK;
   /**
    * The step describing the movement.
+   * -运动步骤
    */
   private final Step step;
   /**
    * The operation to be executed after moving.
+   * -运动之后执行的操作
    */
   private final String operation;
   /**
    * The location at which the operation is to be executed. (May be
    * <code>null</code> if <em>operation</em> is <code>NO_OPERATION</code>.)
+   * -要执行操作的位置
    */
   private final Location opLocation;
   /**
    * Indicates whether this movement is the final one for the drive order it belongs to.
+   * -这个运动是否是队列里面的最后一个点的标识
    */
   private final boolean finalMovement;
   /**
    * The destination position of the whole drive order.
+   * -运动队列的最终的目标点
    */
   private final Point finalDestination;
   /**
    * The destination location of the whole drive order.
+   * -运动队列的最终目标位置（工位）
    */
   private final Location finalDestinationLocation;
   /**
    * The operation to be executed at the destination position.
+   * -在目的点，需要执行的操作
    */
   private final String finalOperation;
   /**
    * Properties of the order this command is part of.
+   * -该订单的执行顺序
    */
   private final Map<String, String> properties;
 

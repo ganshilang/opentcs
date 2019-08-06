@@ -1911,6 +1911,7 @@ public class Vehicle
   /**
    * The elements of this enumeration represent the possible orientations of a
    * vehicle.
+   * -这是一个枚举参数，列举小车能够行驶的方式，前行或者后退。
    */
   public enum Orientation {
 

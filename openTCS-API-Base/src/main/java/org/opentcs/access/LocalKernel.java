@@ -45,8 +45,9 @@ public interface LocalKernel
 
   /**
    * Loads the saved model into the kernel.
+   * -将工厂模型保存到内核中
    * If there is no saved model, a new empty model will be loaded.
-   *
+   * -如果没有工厂模型，那么就加载一个空的模型
    * @throws IllegalStateException If the model cannot be loaded.
    * @throws CredentialsException If the calling client is not allowed to
    * execute this method.
